@@ -1,99 +1,104 @@
 import React from 'react';
-import { Form, InputNumber, Descriptions } from 'antd';
-import { ListingItem } from '../../../types/trade';
+import { Form, Input, Button, InputNumber } from 'antd';
+import { ListingItem } from '../../../types/listing';
 
 interface PriceQuoteFormProps {
   listing: ListingItem;
+  onSubmit: (values: any) => void;
 }
 
-const PriceQuoteForm: React.FC<PriceQuoteFormProps> = ({ listing }) => {
+const PriceQuoteForm: React.FC<PriceQuoteFormProps> = ({ listing, onSubmit }) => {
+  const [form] = Form.useForm();
+
+  const initialValues = {
+    pnName: listing.pnName,
+    goodsSpec: listing.goodsSpec,
+    unitNumber: listing.unitNumber,
+    jicha: listing.jicha,
+    rightDate: listing.rightDate,
+    rightWarehouseName: listing.rightWarehouseName
+  };
+
+  const validateQuantity = (_: any, value: number) => {
+    if (!value) {
+      return Promise.reject('请输入数量');
+    }
+    if (value < 1) {
+      return Promise.reject('数量必须大于0');
+    }
+    if (value > listing.unitNumber) {
+      return Promise.reject(`数量不能超过${listing.unitNumber}`);
+    }
+    return Promise.resolve();
+  };
+
+  const validatePrice = (_: any, value: number) => {
+    if (!value) {
+      return Promise.reject('请输入价格');
+    }
+    if (value < listing.priceLow || value > listing.priceUp) {
+      return Promise.reject(`价格必须在${listing.priceLow}和${listing.priceUp}之间`);
+    }
+    return Promise.resolve();
+  };
+
   return (
-    <>
-      <Descriptions title="挂牌信息" bordered column={2}>
-        <Descriptions.Item label="品种">{listing.productType}</Descriptions.Item>
-        <Descriptions.Item label="参考合约">{listing.referenceContract}</Descriptions.Item>
-        <Descriptions.Item label="可用数量">{listing.quantity}吨</Descriptions.Item>
-        <Descriptions.Item label="基差">{listing.basis}元/吨</Descriptions.Item>
-        <Descriptions.Item label="交货期">{listing.deliveryPeriod}</Descriptions.Item>
-        <Descriptions.Item label="交收方式">{listing.deliveryMethod}</Descriptions.Item>
-        <Descriptions.Item label="交收仓库">{listing.warehouse}</Descriptions.Item>
-      </Descriptions>
-
-      <div style={{ height: 24 }} />
-
+    <Form
+      form={form}
+      layout="vertical"
+      initialValues={initialValues}
+      onFinish={onSubmit}
+    >
       <Form.Item
+        label="产品名称"
+        name="pnName"
+      >
+        <Input disabled />
+      </Form.Item>
+      <Form.Item
+        label="规格"
+        name="goodsSpec"
+      >
+        <Input disabled />
+      </Form.Item>
+      <Form.Item
+        label="数量"
         name="quantity"
-        label="点价数量（吨）"
-        rules={[
-          { required: true, message: '请输入点价数量' },
-          {
-            validator: (_, value) => {
-              if (value > listing.quantity) {
-                return Promise.reject('点价数量不能超过可用数量');
-              }
-              if (value % listing.minTradeUnit !== 0) {
-                return Promise.reject(`点价数量必须是${listing.minTradeUnit}的整数倍`);
-              }
-              return Promise.resolve();
-            },
-          },
-        ]}
+        rules={[{ validator: validateQuantity }]}
       >
-        <InputNumber
-          style={{ width: '100%' }}
-          min={listing.minTradeUnit}
-          max={listing.quantity}
-          step={listing.minTradeUnit}
-          placeholder={`最小交易单位：${listing.minTradeUnit}吨`}
-        />
+        <InputNumber style={{ width: '100%' }} />
       </Form.Item>
-
       <Form.Item
+        label="价格"
         name="price"
-        label="点价价格（元/吨）"
-        rules={[
-          { required: true, message: '请输入点价价格' },
-          {
-            validator: (_, value) => {
-              if (value < listing.priceRange.min || value > listing.priceRange.max) {
-                return Promise.reject(
-                  `点价价格必须在${listing.priceRange.min}至${listing.priceRange.max}元/吨之间`
-                );
-              }
-              return Promise.resolve();
-            },
-          },
-        ]}
+        rules={[{ validator: validatePrice }]}
       >
-        <InputNumber
-          style={{ width: '100%' }}
-          min={listing.priceRange.min}
-          max={listing.priceRange.max}
-          precision={2}
-          placeholder={`价格区间：${listing.priceRange.min}-${listing.priceRange.max}元/吨`}
-        />
+        <InputNumber style={{ width: '100%' }} />
       </Form.Item>
-
       <Form.Item
-        noStyle
-        shouldUpdate={(prevValues, currentValues) =>
-          prevValues.quantity !== currentValues.quantity ||
-          prevValues.price !== currentValues.price
-        }
+        label="基差"
+        name="jicha"
       >
-        {({ getFieldsValue }) => {
-          const { quantity, price } = getFieldsValue();
-          const total = quantity && price ? quantity * price : 0;
-          return (
-            <Descriptions column={1}>
-              <Descriptions.Item label="预计总金额">
-                {total.toFixed(2)}元
-              </Descriptions.Item>
-            </Descriptions>
-          );
-        }}
+        <Input disabled />
       </Form.Item>
-    </>
+      <Form.Item
+        label="交割仓库"
+        name="rightWarehouseName"
+      >
+        <Input disabled />
+      </Form.Item>
+      <Form.Item
+        label="交割日期"
+        name="rightDate"
+      >
+        <Input disabled />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          提交报价
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

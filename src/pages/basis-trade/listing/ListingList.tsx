@@ -10,7 +10,35 @@ import { SearchOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons'
 const { Option } = Select;
 
 const ListingList: React.FC = () => {
-  const [data, setData] = useState<ListingItem[]>(mockListings);
+  const [data, setData] = useState<ListingItem[]>([{
+    id: 1,
+    ginfoNumber: 'GN001',
+    ginfoDate: '2023-12-26',
+    systemDate: '2023-12-26',
+    mainPriceDemo: '示例价格',
+    pnName: '产品名称',
+    goodsMateri: '材料',
+    goodsSpec: '规格',
+    hangWeight: 100,
+    jicha: 10,
+    type: '公开交易',
+    typeName: '公开交易',
+    rightType: '现货交收',
+    priceLow: 1000,
+    priceUp: 2000,
+    marginLevel: 10,
+    unitNumber: 1,
+    remark: '备注信息',
+    status: '已发布',
+    priceState: '点价中',
+    rightDateNum: 30,
+    rightDate: '2024-01-26',
+    rightWareHouse: 1,
+    rightWarehouseName: '仓库名称',
+    hits: 0,
+    createdAt: '2023-12-26',
+    updatedAt: '2023-12-26'
+  }]);
   const [viewModalVisible, setViewModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState<ListingItem | undefined>();
@@ -145,7 +173,7 @@ const ListingList: React.FC = () => {
 
   const handleSearch = () => {
     const values = searchForm.getFieldsValue();
-    let filteredData = [...mockListings];
+    let filteredData = [...data];
 
     if (values.ginfoNumber) {
       filteredData = filteredData.filter(item => 
@@ -176,61 +204,97 @@ const ListingList: React.FC = () => {
 
   const handleReset = () => {
     searchForm.resetFields();
-    setData(mockListings);
+    setData([{
+      id: 1,
+      ginfoNumber: 'GN001',
+      ginfoDate: '2023-12-26',
+      systemDate: '2023-12-26',
+      mainPriceDemo: '示例价格',
+      pnName: '产品名称',
+      goodsMateri: '材料',
+      goodsSpec: '规格',
+      hangWeight: 100,
+      jicha: 10,
+      type: '公开交易',
+      typeName: '公开交易',
+      rightType: '现货交收',
+      priceLow: 1000,
+      priceUp: 2000,
+      marginLevel: 10,
+      unitNumber: 1,
+      remark: '备注信息',
+      status: '已发布',
+      priceState: '点价中',
+      rightDateNum: 30,
+      rightDate: '2024-01-26',
+      rightWareHouse: 1,
+      rightWarehouseName: '仓库名称',
+      hits: 0,
+      createdAt: '2023-12-26',
+      updatedAt: '2023-12-26'
+    }]);
   };
 
   const getPriceStateTag = (state: ListingItem['priceState']) => {
-    const colorMap: Record<ListingItem['priceState'], string> = {
-      '点价中': 'blue',
-      '点价完成': 'green',
-      '点价失败': 'red',
-      '部分完成': 'gold'
-    };
-    const textMap: Record<ListingItem['priceState'], string> = {
+    const priceStateMap: Record<ListingItem['priceState'], string> = {
       '点价中': '点价中',
       '点价完成': '点价完成',
       '点价失败': '点价失败',
       '部分完成': '部分完成'
     };
-    return <Tag color={colorMap[state]}>{textMap[state]}</Tag>;
+
+    const priceStateColors = {
+      '点价中': '#108ee9',
+      '点价完成': '#87d068',
+      '点价失败': '#f50',
+      '部分完成': '#2db7f5'
+    };
+
+    return <Tag color={priceStateColors[state]}>{priceStateMap[state]}</Tag>;
   };
 
   const getStatusTag = (status: ListingItem['status']) => {
-    const colorMap: Record<ListingItem['status'], string> = {
-      '已发布': 'green',
-      '已下架': 'gray'
-    };
-    const textMap: Record<ListingItem['status'], string> = {
+    const statusMap: Record<ListingItem['status'], string> = {
       '已发布': '已发布',
       '已下架': '已下架'
     };
-    return <Tag color={colorMap[status]}>{textMap[status]}</Tag>;
+
+    const statusColors = {
+      '已发布': '#87d068',
+      '已下架': '#f50'
+    };
+
+    return <Tag color={statusColors[status]}>{statusMap[status]}</Tag>;
   };
 
   const getTypeTag = (type: ListingItem['type']) => {
-    const colorMap: Record<ListingItem['type'], string> = {
-      '公开交易': 'blue',
-      '定向交易': 'green',
-      '指定交易': 'orange'
-    };
-    const textMap: Record<ListingItem['type'], string> = {
+    const typeMap: Record<ListingItem['type'], string> = {
       '公开交易': '公开交易',
       '定向交易': '定向交易',
       '指定交易': '指定交易'
     };
-    return <Tag color={colorMap[type]}>{textMap[type]}</Tag>;
+
+    const typeColors = {
+      '公开交易': '#108ee9',
+      '定向交易': '#87d068',
+      '指定交易': '#2db7f5'
+    };
+
+    return <Tag color={typeColors[type]}>{typeMap[type]}</Tag>;
   };
 
   const getRightTypeTag = (rightType: ListingItem['rightType']) => {
-    const colorMap: Record<ListingItem['rightType'], string> = {
-      '现货交收': 'purple',
-      '期货交收': 'cyan'
-    };
-    const textMap: Record<ListingItem['rightType'], string> = {
+    const rightTypeMap: Record<ListingItem['rightType'], string> = {
       '现货交收': '现货交收',
       '期货交收': '期货交收'
     };
-    return <Tag color={colorMap[rightType]}>{textMap[rightType]}</Tag>;
+
+    const rightTypeColors = {
+      '现货交收': '#108ee9',
+      '期货交收': '#87d068'
+    };
+
+    return <Tag color={rightTypeColors[rightType]}>{rightTypeMap[rightType]}</Tag>;
   };
 
   const columns: ColumnsType<ListingItem> = [

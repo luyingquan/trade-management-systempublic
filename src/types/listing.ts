@@ -1,24 +1,31 @@
 export interface ListingItem {
   id: number;
-  title: string;
-  productType: string;
-  referenceContract: string;
-  quantity: number;
-  minTradeUnit: number;
-  basis: number;
-  deliveryPeriod: string;
-  deliveryMethod: string;
-  warehouse: string;
-  priceRange: {
-    min: number;
-    max: number;
-  };
-  type: 'PUBLIC' | 'PRIVATE' | 'DIRECTED';
-  rightType: 'SPOT' | 'FUTURE';
-  status: 'ACTIVE' | 'INACTIVE';
-  priceState: '待点价' | '正在点价' | '部分成交' | '全部成交';
-  createTime: string;
-  updateTime: string;
+  ginfoNumber: string;
+  ginfoDate: string;
+  systemDate: string;
+  mainPriceDemo: string;
+  pnName: string;
+  goodsMateri: string;
+  goodsSpec: string;
+  hangWeight: number;
+  jicha: number;
+  type: '公开交易' | '定向交易' | '指定交易';
+  typeName: string;
+  rightType: '现货交收' | '期货交收';
+  priceLow: number;
+  priceUp: number;
+  marginLevel: number;
+  unitNumber: number;
+  remark: string;
+  status: '已发布' | '已下架';
+  priceState: '点价中' | '点价完成' | '点价失败' | '部分完成';
+  rightDateNum: number;
+  rightDate: string;
+  rightWareHouse: number;
+  rightWarehouseName: string;
+  hits: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Contract {
