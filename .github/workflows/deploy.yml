@@ -27,11 +27,32 @@ jobs:
         run: |
           npm ci --legacy-peer-deps
           npm list
+        env:
+          CI: true
+
+      - name: Type check
+        run: |
+          npx tsc --noEmit
+        continue-on-error: true
 
       - name: Build
         run: |
           npm run build
           ls -la dist/
+        env:
+          CI: true
+          NODE_ENV: production
+
+      - name: Debug info
+        run: |
+          echo "Node version:"
+          node --version
+          echo "NPM version:"
+          npm --version
+          echo "Directory structure:"
+          ls -R
+          echo "Package.json:"
+          cat package.json
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -41,3 +62,5 @@ jobs:
           publish_dir: ./dist
           publish_branch: gh-pages
           force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
