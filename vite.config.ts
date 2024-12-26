@@ -9,7 +9,7 @@ const __dirname = dirname(__filename)
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/trade-management-systempublic/',
+  base: './',
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
