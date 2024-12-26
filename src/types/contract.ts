@@ -1,3 +1,40 @@
+export interface Contract {
+  id: number;
+  title: string;
+  status: string;
+  deliveryStatus: string;
+  marginStatus: string;
+  amount: number;
+  price: number;
+  quantity: number;
+  deliveryDate: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ContractService {
+  getContracts: (pageRequest: PageRequest) => Promise<PageResponse<Contract>>;
+  getContract: (id: number) => Promise<Contract>;
+  createContract: (contract: Partial<Contract>) => Promise<Contract>;
+  updateContract: (id: number, contract: Partial<Contract>) => Promise<Contract>;
+  requestEarlyDelivery: (id: number) => Promise<void>;
+  requestDelayedDelivery: (id: number) => Promise<void>;
+  payMargin: (id: number, amount: number) => Promise<void>;
+}
+
+export interface PageRequest {
+  page: number;
+  size: number;
+}
+
+export interface PageResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+}
+
 export interface ContractItem {
   id: string;
   contractNo: string;          // 合同编号

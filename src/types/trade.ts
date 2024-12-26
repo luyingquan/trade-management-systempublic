@@ -49,29 +49,40 @@ export interface Contract {
 
 export interface TradeOrder {
   id: number;
-  contractId: number;
-  type: string;
-  price: number;
+  listingId: number;
   quantity: number;
+  price: number;
+  totalAmount: number;
   status: string;
   createdAt: string;
   updatedAt: string;
 }
 
+export interface TradeService {
+  createOrder: (order: Partial<TradeOrder>) => Promise<TradeOrder>;
+  updateOrder: (id: number, order: Partial<TradeOrder>) => Promise<TradeOrder>;
+  submitDeliveryRequest: (orderId: number) => Promise<void>;
+  submitMarginPayment: (orderId: number, amount: number) => Promise<void>;
+}
+
 export interface MarginPayment {
   id: number;
-  contractId: number;
+  orderId: number;
   amount: number;
-  type: string;
   status: string;
+  paymentDate: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface DeliveryRequest {
-  contractId: number;
-  requestedDate: string;
-  location: string;
-  notes?: string;
+  id: number;
+  orderId: number;
+  status: string;
+  requestDate: string;
+  deliveryDate: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ContractItem {
