@@ -38,49 +38,52 @@ export const mockOrders: TradeOrder[] = [
 ];
 
 // 挂牌数据
-export const mockListings: ListingItem[] = Array.from({ length: 30 }, (_, index) => {
-  const id = index + 1;
-  const date = dayjs().add(Math.floor(index / 3), 'days').format('YYYY-MM-DD');
-  const types = ['公开交易', '定向交易', '指定交易'] as const;
-  const rightTypes = ['现货交收', '期货交收'] as const;
-  const mainPriceDemos = ['HC2401', 'RB2401', 'WR2401'];
-  const pnNames = ['热轧卷板', '螺纹钢', '线材'];
-  const goodsMateris = ['Q235B', 'SPHC', 'HRB400E', 'HPB300'];
-  const specs = ['5.75*1500*C', '3.0*1250*C', 'Φ16-25mm', 'Φ6.5mm'];
-  const statuses = ['已发布', '已下架'] as const;
-  const priceStates = ['点价中', '点价完成', '点价失败', '部分完成'] as const;
-  const warehouses = ['上海仓库', '天津仓库', '广州仓库', '武汉仓库'];
-
-  return {
-    id,
-    ginfoNumber: `GP202401${String(id).padStart(3, '0')}`,
-    ginfoDate: date,
-    systemDate: date,
-    mainPriceDemo: mainPriceDemos[index % mainPriceDemos.length],
-    pnName: pnNames[index % pnNames.length],
-    goodsMateri: goodsMateris[index % goodsMateris.length],
-    goodsSpec: specs[index % specs.length],
-    hangWeight: 1000 + (index * 100),
-    jicha: 50 + (index * 2),
-    type: types[index % types.length],
-    typeName: types[index % types.length],
-    rightType: rightTypes[index % rightTypes.length],
-    priceLow: 4000 + (index * 50),
-    priceUp: 4500 + (index * 50),
-    marginLevel: 10 + (index % 3) * 5,
-    unitNumber: 100,
-    remark: '备注信息',
-    status: statuses[index % statuses.length],
-    priceState: priceStates[index % priceStates.length],
-    rightDateNum: 30,
-    rightDate: dayjs().add(30, 'days').format('YYYY-MM-DD'),
-    rightWareHouse: index % warehouses.length,
-    rightWarehouseName: warehouses[index % warehouses.length],
-    hits: Math.floor(Math.random() * 1000),
-    createdAt: `${date} ${String(Math.floor(index / 2) + 8).padStart(2, '0')}:00:00`,
-    updatedAt: `${date} ${String(Math.floor(index / 2) + 8).padStart(2, '0')}:00:00`
-  };
-});
+export const mockListings: ListingItem[] = [
+  {
+    id: 1,
+    title: '铜期货基差交易',
+    productType: '铜',
+    referenceContract: 'CU2401',
+    quantity: 100,
+    minTradeUnit: 5,
+    basis: 50,
+    deliveryPeriod: '2024-01',
+    deliveryMethod: '仓库交收',
+    warehouse: '上海期货交易所指定交割仓库',
+    priceRange: {
+      min: 65000,
+      max: 70000
+    },
+    type: 'PUBLIC',
+    rightType: 'SPOT',
+    status: 'ACTIVE',
+    priceState: '待点价',
+    createTime: '2023-12-26T10:00:00',
+    updateTime: '2023-12-26T10:00:00'
+  },
+  {
+    id: 2,
+    title: '铝期货基差交易',
+    productType: '铝',
+    referenceContract: 'AL2401',
+    quantity: 200,
+    minTradeUnit: 10,
+    basis: 30,
+    deliveryPeriod: '2024-01',
+    deliveryMethod: '仓库交收',
+    warehouse: '上海期货交易所指定交割仓库',
+    priceRange: {
+      min: 18000,
+      max: 20000
+    },
+    type: 'PRIVATE',
+    rightType: 'FUTURE',
+    status: 'INACTIVE',
+    priceState: '全部成交',
+    createTime: '2023-12-26T09:00:00',
+    updateTime: '2023-12-26T09:00:00'
+  }
+] as const;
 
 // 合同数据
 export const mockContracts: Contract[] = Array.from({ length: 20 }, (_, index) => {
